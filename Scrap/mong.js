@@ -20,26 +20,14 @@ async function connectToDB() {
   }
 }
 
-// Insert a topic into the database
-async function insertTopic(db, topicData) {
-  try {
-    const result = await db.collection("topics").insertOne(topicData);
-    console.log("Inserted topic with ID:", result.insertedId);
-    return result.insertedId;
-  } catch (err) {
-    console.error("Error inserting topic:", err);
-    throw err;
-  }
-}
-
-// Update a topic by adding subtopics/children
-async function updateTopicWithChildren(db, topicId, subtopics) {
+// Update a child topic's content
+async function updateTopicWithChildren(db, parentId, childId, content) {
   try {
     const result = await db
       .collection("topics")
       .updateOne(
-        { _id: new ObjectId(topicId) },
-        { $set: { child: subtopics } }
+        { "child._id": childId },
+        { $set: { "child.$.content": content } }
       );
     console.log("Updated topic:", result.modifiedCount > 0);
     return result.modifiedCount > 0;
@@ -49,10 +37,8 @@ async function updateTopicWithChildren(db, topicId, subtopics) {
   }
 }
 
-
 module.exports = {
   connectToDB,
-  insertTopic,
   updateTopicWithChildren,
   ObjectId,
 };
