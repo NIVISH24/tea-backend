@@ -51,7 +51,7 @@ def query_document(prompt, collection):
     context = str(results["documents"])
 
     # Generate a response using the most relevant document context
-    output = ollama.generate(model="llama3.2", prompt=f"Using this data: {context}. Respond to this prompt: {prompt}")
+    output = ollama.generate(model="llama3.2", prompt=f"This is the data obtained from internet: {context} use this if you need to correct the outputs: . Respond to this prompt, if needed, refer the data: {prompt}")
 
     return output['response']
 
