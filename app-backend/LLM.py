@@ -1,8 +1,9 @@
 import ollama
 
 def search_suggestions(user_input):
-    prompt = f"This is the user prompt: '{user_input}'. Based on this prompt, generate a list of search suggestions that can help you refine your search query for data you can feed on to provide a more accurate response."
+    prompt = f"This is the user prompt: '{user_input}'. Based on this prompt, generate a list of search suggestions that can help you refine your search query for data you can feed on to provide a more accurate response. "
     output = ollama.generate(model="llama3.2", prompt=prompt)
+    print(output["response"])
     return(output["response"])
 
 
@@ -28,24 +29,23 @@ def generate_content(topic_name, region, age, interests):
     print(output["response"])
     return output['response']
 
-# Example usage
-user_input = "Teach me about DBMS"
-region = "India"
-age = 15
-interests = ["science", "star wars"]
+if __name__ == "__main__":
+    user_input = "Teach me about DBMS"
+    region = "India"
+    age = 15
+    interests = ["science", "star wars"]
 
-# Generate topic name
-topic_name = generate_topic_name(user_input)
+    # Generate topic name
+    topic_name = generate_topic_name(user_input)
 
-# Generate subheadings and related topics
-subheadings_and_related_topics = generate_subheadings_and_related_topics(topic_name)
+    # Generate subheadings and related topics
+    subheadings_and_related_topics = generate_subheadings_and_related_topics(topic_name)
 
+    content = [generate_content(i, region, age, interests) for i in subheadings_and_related_topics]
 
-content = [generate_content(i, region, age, interests) for i in subheadings_and_related_topics]
-
-print("Topic Name:", topic_name)
-print("Subheadings and Related Topics:", subheadings_and_related_topics)
-print("Generated Content:", content)
+    print("Topic Name:", topic_name)
+    print("Subheadings and Related Topics:", subheadings_and_related_topics)
+    print("Generated Content:", content)
 """
 Llama.cpp can be used to leverage oneAPI's IPEX(Intel Extension for Pytorch) to run the model on Intel hardware.
 RAG could've been used to retrieve content from the web and then generate content based on the user's input.
