@@ -1,5 +1,11 @@
 import ollama
 
+def search_suggestions(user_input):
+    prompt = f"This is the user prompt: '{user_input}'. Based on this prompt, generate a list of search suggestions that can help you refine your search query for data you can feed on to provide a more accurate response."
+    output = ollama.generate(model="llama3.2", prompt=prompt)
+    return(output["response"])
+
+
 def generate_topic_name(user_input):
     prompt = f"Based on the user's input, '{user_input}', generate a clear and concise topic name that encapsulates the main subject. Just one sentence and nothing else."
     output = ollama.generate(model="llama3.2", prompt=prompt)
