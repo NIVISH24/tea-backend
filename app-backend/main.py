@@ -1,5 +1,6 @@
 from LLM import search_suggestions
 from scrape import scrape_and_save_to_pdf
+from RAG2 import query_rag
 
 prompt = input("What do you want to learn today? \n")
 
@@ -12,6 +13,8 @@ search_queries_list = eval(search_queries)
 for query in search_queries_list:
     scrape_and_save_to_pdf(query)
     print(f"Scraped and saved {query} to PDF")
+    
+#     
     
 
 
