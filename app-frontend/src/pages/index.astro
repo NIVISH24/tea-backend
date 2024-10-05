@@ -1,0 +1,12 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Main from "../components/Main.astro";
+import Aside from "../components/Aside.astro";
+import Topics from "../components/Topics";
+---
+
+<Layout title="Welcome to Astro.">
+  <main class="flex w-screen text-white">
+    <Topics client:load />
+  </main>
+</Layout>
