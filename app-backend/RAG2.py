@@ -28,6 +28,7 @@ def initialize_database(pdf_directory="data", metadata_file="metadata.pkl"):
 
     # Import documents into the database only if not already imported
     for d in docs:
+        print(d)
         doc_id = str(d.metadata)
         if doc_id not in metadata:
             embedding = ollama.embeddings(model="nomic-embed-text", prompt=d.page_content)["embedding"]

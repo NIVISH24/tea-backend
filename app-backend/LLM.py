@@ -1,24 +1,26 @@
 import ollama
 
 def search_suggestions(user_input):
-    prompt = f"This is the user prompt: '{user_input}'. Based on this prompt, generate a list of search suggestions that can help you refine your search query for data you can feed on to provide a more accurate response."
+    prompt = f"This is the topic name: '{user_input}'. Based on this, generate a list of search suggestions that can help you refine your search query for data you can feed on to provide a more accurate response."
     output = ollama.generate(model="llama3.2", prompt=prompt)
-    output = ollama.generate(model="llama3.2", prompt=f"{output['response']} convert this to python list of strings and nothing else, no explanations")
-    print(output["response"])
-    return(output["response"])
+    output = ollama.generate(model="llama3.2", prompt=f"{output['response']} \n\n convert this to python list of strings, (eg. [\"topic1\", \"topic2\", ...]) and nothing else, no explanations")
+    output = eval(output["response"][(output.find('[')):(output.find(']')+1)])
+    print(output)
+    return(output)
 
 
 def generate_topic_name(user_input):
-    prompt = f"Based on the user's input, '[{user_input}]', generate a clear and concise topic name that encapsulates the main subject. Just one sentence and nothing else."
+    prompt = f"Based on the user's input, '[{user_input}]', generate a clear and concise topic name that encapsulates the main subject. Just one or few words and nothing else."
     output = ollama.generate(model="llama3.2", prompt=prompt)
-    print(output["response"])
+    print("topic name: ", output["response"])
     return output['response']
 
 def generate_subheadings_and_related_topics(topic_name):
-    prompt = f"For the topic '[{topic_name}]', list all the types, subheadings, and related topics necessary to fully understand this course in the form of a 1-Dimensional python list - between a [] Eg: [x, y, z] and no explanations."
+    prompt = f"For the topic '[{topic_name}]', list all the types, subheadings, and related topics necessary to fully understand this course."
     output = ollama.generate(model="llama3.2", prompt=prompt)
-    print(output["response"])
-    return eval(output['response'])  # Assuming the output is a string representation of a list.
+    output = ollama.generate(model="llama3.2", prompt=f"{output['response']} convert this to python list of strings and nothing else, no explanations eg:['subheading1', 'subheading2', ...]")
+    output = eval(output["response"][(output.find('[')):(output.find(']')+1)])
+    return (output)  # Assuming the output is a string representation of a list.
 
 def generate_content(topic_name, region, age, interests):
     prompt = f"Create tailored content for the topic '{topic_name}' based on the following parameters:\n" \
