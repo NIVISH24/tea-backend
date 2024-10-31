@@ -16,8 +16,8 @@ def initialize_database(pdf_directory="data", metadata_file="metadata.pkl"):
 
     # Load PDFs and split them into chunks
     docs = RecursiveCharacterTextSplitter(
-        chunk_size=600,
-        chunk_overlap=150,
+        chunk_size=2400,
+        chunk_overlap=1000,
         length_function=len,
         is_separator_regex=False,
     ).split_documents(PyPDFDirectoryLoader(pdf_directory).load())
